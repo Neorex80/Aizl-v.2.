@@ -1,0 +1,89 @@
+.hero {
+  display: flex;
+  flex-direction: column; /* Ensure elements are stacked vertically */
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  padding: 0 2rem;
+  position: relative;
+  overflow: hidden;
+  background-color: #000000;
+
+  @media (max-width: 768px) {
+    height: 50vh;
+  }
+
+  @media (max-width: 480px) {
+    height: 40vh;
+  }
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  gap: 10px;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to right,
+    transparent,
+    transparent 10px,
+    rgba(255, 95, 109, 0.5) 10px,
+    rgba(255, 95, 109, 0.5) 20px
+  );
+  opacity: 0.3;
+  z-index: 1;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 1rem; /* Add margin below text to separate from input */
+}
+
+.hero__heading {
+  font-size: 2.5rem;
+  line-height: 1.4;
+  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(90deg, #4b90ff, #ff5546); /* Gradient for the text */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textPulse 2s ease-in-out infinite;
+
+  @media (min-width: 768px) {
+    font-size: 3.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 4.5rem;
+  }
+}
+
+.highlight {
+  background: linear-gradient(90deg, #4b90ff, #ff5546); /* Gradient colors for highlights */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 5px;
+  position: relative;
+  display: inline-block;
+  animation: textPulse 2s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+
+
+

@@ -1,0 +1,204 @@
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a, #2e2e2e);
+  background-size: cover;
+  padding: 20px;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(0, 0, 0, 0.8); 
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); 
+  border: 1px solid #444;
+  position: relative;
+  overflow: hidden;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.catchy-line {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4a90e2;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: #ddd;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.welcome-message {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #ddd;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #bbb;
+  margin-bottom: 0.5rem;
+}
+
+.icon {
+  margin-right: 0.5rem;
+  color: #4a90e2;
+}
+
+.line-input {
+  position: relative;
+}
+
+.line-input::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(135deg, #4a90e2, #e94e77);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transition: transform 0.3s, background-color 0.3s;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+}
+
+.line-input:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: #222;
+  color: #fff;
+  outline: none;
+  border-radius: 5px;
+}
+
+.input-error {
+  border-color: #e74c3c;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #4a90e2, #e94e77);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submit-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); 
+}
+
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.social-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #333;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.social-button.google {
+  background: #db4437;
+}
+
+.social-button.github {
+  background: #333;
+}
+
+.social-icon {
+  margin-right: 0.5rem;
+}
+
+.social-button:hover {
+  background: #444;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.switch-text {
+  text-align: center;
+  margin-top: 1rem;
+  color: #bbb;
+}
+
+.switch-link {
+  color: #4a90e2;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+.back-button .icon {
+  margin-right: 8px;
+}
+
+.back-button:hover {
+  opacity: 0.8;
+}

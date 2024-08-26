@@ -1,0 +1,165 @@
+.header {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)); /* Gradient with transparency */
+    padding: 15px 0;          
+    color: white;  
+    position: relative; 
+    z-index: 2; 
+}    
+
+.container {
+    max-width: 1200px;     
+    margin: 0 auto;        
+    display: flex;         
+    justify-content: space-between; 
+    align-items: center;   
+    padding: 1rem;         
+    box-sizing: border-box;
+    position: relative;
+}
+
+.logo {
+    font-size: 24px;         
+    font-weight: bold;       
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.nav-link {
+    margin: 0 15px;         
+    color: white;            
+    text-decoration: none;   
+    transition: color 0.3s;  
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 20px;        
+}
+
+.signup, .login {
+    --border-radius: 10px;
+    --border-width: 2px;
+    appearance: none;
+    position: relative;
+    padding: 1em 2em;
+    border: 0;
+    background: rgba(0, 0, 0, 0.9);
+    font-family: "Roboto", Arial, "Segoe UI", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: #fff;
+    z-index: 2;
+    }
+    
+    .signup::after,
+    .login::after {
+    --m-i: linear-gradient(#000, #000);
+    --m-o: content-box, padding-box;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: var(--border-width);
+    border-radius: var(--border-radius);
+    background-image: conic-gradient(
+    #4b90ff, #ff5546
+    );
+
+    -webkit-mask-image: var(--m-i), var(--m-i);
+    mask-image: var(--m-i), var(--m-i);
+    -webkit-mask-origin: var(--m-o);
+    mask-origin: var(--m-o);
+    -webkit-mask-clip: var(--m-o);
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+    filter: hue-rotate(0);
+    animation: rotate-hue linear 500ms infinite;
+    animation-play-state: paused;
+    }
+    
+    .signup:hover::after, .login:hover::after {
+    animation-play-state: running;
+    }
+
+    @keyframes rotate-hue {
+    to {
+    filter: hue-rotate(1turn);
+    }
+    
+    }
+    
+    .signup::after, .login::after {
+    box-sizing: border-box;
+    }
+    
+    .signup:active,
+    .login:active {
+    --border-width: 5px;
+    }
+
+
+.hamburger {
+    display: none; 
+    flex-direction: column;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 4px 0;
+}
+
+@media (max-width: 768px) {
+    .nav {
+        position: absolute;
+        top: 60px; 
+        right: 0;
+        background: rgba(0, 0, 0, 0.9);
+        width: 100%; 
+        flex-direction: column;
+        align-items: center;
+        max-height: 0;
+        overflow: hidden;
+    }
+
+    .nav.open {
+        max-height: 300px; 
+    }
+
+    .hamburger {
+        display: flex; 
+    }
+
+    .container {
+        justify-content: space-between;
+    }
+
+    .nav-link {
+        margin: 10px 0; 
+    }
+}
+
+.brand-name {
+    font-size: 23px; 
+    font-weight: bold;
+    display: flex;
+    align-items: center; 
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #4b90ff, #ff5546); /* Your gradient colors */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    margin: 0 5px; 
+}
+
