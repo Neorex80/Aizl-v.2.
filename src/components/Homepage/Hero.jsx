@@ -18,7 +18,7 @@ const Hero = () => {
     }, 2000); // Change word every 2 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [words]);
 
   const placeholders = [
     "What's the first rule of Fight Club?",

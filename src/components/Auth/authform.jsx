@@ -176,7 +176,7 @@ const AuthForm = () => {
         <p className="switch-text">
           {isLogin ? (
             <>
-              Don't have an account? 
+              Don&rsquo;t have an account? 
               <button className="switch-link" onClick={() => setIsLogin(false)}> Signup</button>
             </>
           ) : (

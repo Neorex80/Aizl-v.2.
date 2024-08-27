@@ -14,7 +14,7 @@ const WhyChooseUs = () => {
             Discover Our AI-Powered Solutions
           </h2>
           <p className="mx-auto my-4 w-full max-w-lg bg-transparent text-center font-medium leading-relaxed tracking-wide text-gray-400">
-            We offer cutting-edge AI tools that streamline your workflow and boost efficiency. Here's why our solutions are top-notch.
+            We offer cutting-edge AI tools that streamline your workflow and boost efficiency. Here&aposs why our solutions are top-notch.
           </p>
         </div>
 
