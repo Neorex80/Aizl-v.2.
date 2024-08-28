@@ -1,23 +1,14 @@
+"use client";
 import React from 'react';
-import Header from '@/components/Homepage/Header';
-import Features from '@/components/Homepage/Features.jsx';
-import SpotlightGrid from '@/components/Homepage/AgentsShowcase';
-import WhyChooseUs from '@/components/Homepage/WhyChooseUs';
-import Footer from '@/components/Homepage/Footer';
-import Hero from '@/components/Homepage/Hero';
-import ChatArea from '@/components/Chat/area';
-
+import { useRouter } from 'next/navigation'; // Import the useRouter hook from Next.js
+import ChatArea from '@/components/chat/ChatArea';
 
 const App = () => { 
+  const router = useRouter(); // Initialize the router
+
   return (
     <>
-
-     <Header />
-     <Hero />
-     <SpotlightGrid />
-     <Features />
-     <WhyChooseUs />
-     <Footer /> 
+      <ChatArea onBack={() => router.push('/')} /> {/* Pass onBack function to ChatArea */}
     </>
   );
 };
