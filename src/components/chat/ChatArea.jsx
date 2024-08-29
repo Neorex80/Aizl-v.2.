@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
+import 'highlight.js/styles/github-dark.css'; // Choose your preferred highlight.js theme
 
 const ChatArea = ({ onBack }) => {
     const [messages, setMessages] = useState([]);
@@ -89,7 +92,7 @@ const ChatArea = ({ onBack }) => {
             const userMessage = { role: 'user', content: `Uploaded file: ${file.name}`, file };
             setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-            // Implement file upload logic here, similar to the file upload tutorial
+            // Implement file upload logic here
             const uploadResponse = await fetch('/api/upload', {
                 method: 'POST',
                 body: file,
@@ -152,19 +155,23 @@ const ChatArea = ({ onBack }) => {
     };
 
     return (
-        <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-800">
+        <div className="flex flex-col h-screen bg-black text-white">
             {/* Top Section with Back Button and Model Selection */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-300 dark:border-gray-600">
-            <button 
-                    onClick={onBack}  // This triggers the onBack function passed from the parent component
-                    className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 p-2 rounded-full"
+            <div className="flex items-center justify-between p-4 border-b border-gray-600">
+                <button 
+                    onClick={onBack}  
+                    className="bg-gray-700 text-gray-200 p-2 rounded-full"
                 >
                     ⬅ Back
                 </button>
                 <select 
                     value={selectedModel} 
                     onChange={(e) => setSelectedModel(e.target.value)} 
-                    className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
+                    className="border border-transparent rounded-lg p-2 focus:outline-none bg-black text-white font-bold"
+                    style={{
+                        background: 'linear-gradient(to right, #ff7e5f, #feb47b)',
+                        borderImageSlice: 1,
+                    }}
                 >
                     <option value="gemma-7b-it">Gemma 7B</option>
                     <option value="gemma2-9b-it">Gemma 2 9B</option>
@@ -175,9 +182,9 @@ const ChatArea = ({ onBack }) => {
             </div>
 
             {/* Messages Section */}
-            <div className="flex-1 overflow-y-auto p-6" aria-live="polite">
+            <div className="flex-1 overflow-y-auto p-6">
                 {messages.length === 0 && !loading && (
-                    <div className="text-center text-gray-500 dark:text-gray-400">
+                    <div className="text-center text-gray-400">
                         Start the conversation by typing a message...
                     </div>
                 )}
@@ -190,7 +197,7 @@ const ChatArea = ({ onBack }) => {
                         transition={{ duration: 0.5, ease: "easeOut" }}
                     >
                         <div className={`max-w-xs md:max-w-md lg:max-w-lg px-4 py-2 rounded-lg shadow ${
-                            message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100'
+                            message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-700 text-gray-100'
                         }`}>
                             {message.file ? (
                                 <div className="relative">
@@ -204,7 +211,29 @@ const ChatArea = ({ onBack }) => {
                                 </div>
                             ) : (
                                 <div className="relative">
-                                    <ReactMarkdown>
+                                    <ReactMarkdown
+                                        remarkPlugins={[remarkGfm]}
+                                        rehypePlugins={[rehypeHighlight]}
+                                        components={{
+                                            code({ node, inline, className, children, ...props }) {
+                                                return !inline ? (
+                                                    <pre className="p-2 overflow-x-auto bg-gray-800 rounded-lg">
+                                                        <code {...props} className={className}>
+                                                            {children}
+                                                        </code>
+                                                    </pre>
+                                                ) : (
+                                                    <code className="bg-gray-700 rounded-sm px-1">
+                                                        {children}
+                                                    </code>
+                                                );
+                                            },
+                                            h1: ({ node, ...props }) => <h1 className="text-2xl font-bold" {...props} />,
+                                            h2: ({ node, ...props }) => <h2 className="text-xl font-semibold" {...props} />,
+                                            h3: ({ node, ...props }) => <h3 className="text-lg font-medium" {...props} />,
+                                            p: ({ node, ...props }) => <p className="text-gray-300" {...props} />,
+                                        }}
+                                    >
                                         {message.content}
                                     </ReactMarkdown>
                                     <button
@@ -225,7 +254,7 @@ const ChatArea = ({ onBack }) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
                     >
-                        <div className="max-w-xs md:max-w-md lg:max-w-lg px-4 py-2 rounded-lg shadow bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 animate-pulse">
+                        <div className="max-w-xs md:max-w-md lg:max-w-lg px-4 py-2 rounded-lg shadow bg-gray-700 text-gray-100 animate-pulse">
                             Typing...
                         </div>
                     </motion.div>
@@ -234,7 +263,7 @@ const ChatArea = ({ onBack }) => {
             </div>
 
             {/* Input Section */}
-            <div className="border-t border-gray-300 dark:border-gray-600 p-4 flex items-center">
+            <div className="border-t border-gray-600 p-4 flex items-center">
                 <input 
                     type="file" 
                     accept="image/*,application/pdf" 
@@ -242,12 +271,12 @@ const ChatArea = ({ onBack }) => {
                     className="hidden" 
                     id="file-upload"
                 />
-                <label htmlFor="file-upload" className="mr-4 cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                <label htmlFor="file-upload" className="mr-4 cursor-pointer text-gray-400 hover:text-gray-200">
                     <FiFile size={20} />
                 </label>
                 <textarea
                     disabled={loading}
-                    className="flex-1 resize-none border border-gray-300 dark:border-gray-600 rounded-lg p-2 mr-4 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                    className="flex-1 resize-none border border-gray-600 rounded-lg p-2 mr-4 focus:outline-none focus:border-blue-500 bg-gray-800 text-gray-100"
                     rows={1}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}

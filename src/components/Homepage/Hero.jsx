@@ -1,5 +1,6 @@
 "use client"; 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter for navigation
 import { motion } from 'framer-motion';
 import { DynamicPlaceholderInput } from './DynamicPlaceholderInput';
 import './Hero.css';
@@ -7,6 +8,9 @@ import './Hero.css';
 const Hero = () => {
   const [currentWord, setCurrentWord] = useState('Create');
   const words = ['Create', 'Innovate', 'Transform'];
+  const [inputValue, setInputValue] = useState('');
+  
+  const router = useRouter(); // Initialize the router
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -16,7 +20,7 @@ const Hero = () => {
         return words[nextIndex];
       });
     }, 2000); // Change word every 2 seconds
-
+    
     return () => clearInterval(interval);
   }, [words]);
 
@@ -29,16 +33,19 @@ const Hero = () => {
   ];
 
   const handleChange = (e) => {
+    setInputValue(e.target.value); // Store input value
     console.log("Input changed:", e.target.value);
   };
 
   const handleSubmit = (e) => {
-    console.log("Form submitted");
+    e.preventDefault(); // Prevent default form submission
+    console.log("Form submitted: ", inputValue);
+    router.push('/chat'); // Redirect to chat page
   };
 
   return (
     <div className="hero">
-       <div className="hero__content">
+      <div className="hero__content">
         <motion.h1
           className="hero__heading"
           initial={{ opacity: 0, y: 50 }}
@@ -75,11 +82,14 @@ const Hero = () => {
         </motion.h1>
       </div>
       <div className="hero__input">
-        <DynamicPlaceholderInput
-          placeholders={placeholders}
-          onChange={handleChange}
-          onSubmit={handleSubmit}
-        />
+        <form onSubmit={handleSubmit}> {/* Add a form element */}
+          <DynamicPlaceholderInput
+            placeholders={placeholders}
+            onChange={handleChange}
+            value={inputValue} // Bind the input value
+          />
+          <button type="submit" className="submit-button">Start Chat</button> {/* Submit button */}
+        </form>
       </div>
     </div>
   );
