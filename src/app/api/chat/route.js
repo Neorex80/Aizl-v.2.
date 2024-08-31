@@ -1,6 +1,6 @@
 import Groq from "groq-sdk";
 
-const GROQ_API_KEY = "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";
+const GROQ_API_KEY = "lol";
 
 const groq = new Groq({
   apiKey: GROQ_API_KEY,
