@@ -83,12 +83,7 @@ const Hero = () => {
       </div>
       <div className="hero__input">
         <form onSubmit={handleSubmit}> {/* Add a form element */}
-          <DynamicPlaceholderInput
-            placeholders={placeholders}
-            onChange={handleChange}
-            value={inputValue} // Bind the input value
-          />
-          <button type="submit" className="submit-button">Start Chat</button> {/* Submit button */}
+          <button type="submit" className="submit-button">Get Started</button> {/* Submit button */}
         </form>
       </div>
     </div>
