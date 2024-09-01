@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
-import { FiSend, FiCopy, FiFile } from 'react-icons/fi'; // Import the file icon
+import { FiSend, FiCopy, FiFile, FiUser, FiCpu, FiMoreVertical } from 'react-icons/fi'; 
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -8,6 +8,8 @@ import rehypeHighlight from 'rehype-highlight';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'highlight.js/styles/github-dark.css';
+import Sidebar from './Sidebar';
+import { useRouter } from 'next/navigation';
 
 const ChatArea = ({ onBack }) => {
     const [messages, setMessages] = useState([]);
@@ -15,6 +17,8 @@ const ChatArea = ({ onBack }) => {
     const [loading, setLoading] = useState(false);
     const [selectedModel, setSelectedModel] = useState('llama3-8b-8192');
     const messagesEndRef = useRef(null);
+    const router = useRouter();
+    const [showMenu, setShowMenu] = useState(false); 
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -30,6 +34,21 @@ const ChatArea = ({ onBack }) => {
     useEffect(() => {
         localStorage.setItem('chatMessages', JSON.stringify(messages));
     }, [messages]);
+
+    const handleClearChat = () => {
+        setMessages([]);
+    };
+
+    const toggleMenu = () => {
+        setShowMenu(!showMenu);
+    };
+
+    const handleOptionClick = (option) => {
+        // Handle menu option clicks here hehehe done 
+        console.log(option);
+        setShowMenu(false); 
+        router.push('/profile');
+    };
 
     const handleSend = async () => {
         if (input.trim() === '' || loading) return;
@@ -97,7 +116,7 @@ const ChatArea = ({ onBack }) => {
 
                 const uploadResponse = await fetch('/api/upload', {
                     method: 'POST',
-                    body: formData,
+                    body: formData, 
                 });
 
                 const uploadResult = await uploadResponse.json();
@@ -188,11 +207,28 @@ const ChatArea = ({ onBack }) => {
                                     </code>
                                 </pre>
                             ) : (
-                                <code className={`p-1 bg-gray-800 rounded text-yellow-300`} {...props}>
+                                <code className="p-1 bg-gray-800 rounded text-yellow-300" {...props}>
                                     {children}
                                 </code>
                             );
                         },
+                        table: ({ children }) => (
+                            <div className="overflow-x-auto">
+                                <table className="table-auto border-collapse border border-gray-400">
+                                    {children}
+                                </table>
+                            </div>
+                        ),
+                        th: ({ children }) => (
+                            <th className="border border-gray-300 px-4 py-2 bg-gray-200 text-center">
+                                {children}
+                            </th>
+                        ),
+                        td: ({ children }) => (
+                            <td className="border border-gray-300 px-4 py-2 text-center">
+                                {children}
+                            </td>
+                        ),
                     }}
                 >
                     {content}
@@ -200,94 +236,137 @@ const ChatArea = ({ onBack }) => {
             );
         }
     };
+    
 
     return (
-        <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-800 font-sans">
-            {/* Top Section with Back Button and Model Selection */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-300 dark:border-gray-600 bg-black">
-                <button
-                    onClick={onBack}
-                    className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 p-2 rounded-full"
-                >
-                    ⬅ Back
-                </button>
+        <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-800 font-serif">
+        {/* Top Section with Back Button, Model Selection, and Menu */}
+        <div className="flex items-center justify-between p-4 border-b border-gray-300 dark:border-gray-600 bg-black">
+            <button
+                onClick={onBack}
+                className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 p-2 rounded-full"
+            >
+                ⬅ LIZA AI
+            </button>
+            <div className="flex items-center space-x-4">
                 <select
                     value={selectedModel}
                     onChange={(e) => setSelectedModel(e.target.value)}
-                    className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white"
+                    className="border border-gray-300 dark:border-gray-600 text-black rounded-lg p-2 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500"
                 >
-                    <option value="gemma-7b-it">Gemma 7B</option>
-                    <option value="gemma2-9b-it">Gemma 2 9B</option>
-                    <option value="llama3-70b-8192">Llama 3 70B</option>
-                    <option value="llama3-8b-8192">Llama 3 8B</option>
-                    <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
-                </select>
+                <option value="gemma-7b-it">Gemma 7B</option>
+                <option value="gemma2-9b-it">Gemma 2 9B</option>
+                <option value="llama3-70b-8192">Llama 3 70B</option>
+                <option value="llama3-8b-8192">Llama 3 8B</option>
+                <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
+               </select>
+                <button
+                    onClick={handleClearChat}
+                    className="bg-black-500 text-black p-2 rounded-full hover:bg-red-600"
+                    title="Clear Chat"
+                >
+                    🗑️
+                </button>
+                <div className="relative">
+                    <button
+                        onClick={toggleMenu}
+                        className="p-2 text-gray-500 dark:text-gray-300"
+                    >
+                        <FiMoreVertical size={24} />
+                    </button>
+                    {showMenu && (
+                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-10">
+                            <ul className="list-none p-2">
+                                <li onClick={() => handleOptionClick('profile')} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer">
+                                    <FiUser className="inline-block mr-2" /> Profile
+                                </li>
+                                <li onClick={() => handleOptionClick('settings')} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer">
+                                    <FiMoreVertical className="inline-block mr-2" /> Settings
+                                </li>
+                                <li onClick={() => handleOptionClick('logout')} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer">
+                                    <FiCopy className="inline-block mr-2" /> Log Out
+                                </li>
+                            </ul>
+                        </div>
+                    )}
+                </div>
             </div>
+        </div>
+
+
 
             {/* Messages Section */}
-            <div className="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-900">
-                {messages.length === 0 && !loading && (
-                    <div className="text-center text-gray-500 dark:text-gray-400">
-                        Start the conversation by typing a message...
-                    </div>
-                )}
-                {messages.map((message, index) => (
-                    <motion.div
-                        key={index}
-                        className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} mb-4`}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
-                    >
-                        <div className={`max-w-xs md:max-w-md lg:max-w-lg px-4 py-2 rounded-lg shadow ${
-                            message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
-                        }`}>
+            <div className="flex-1 overflow-y-auto p-6 bg-black-50 dark:bg-gray-900">
+    {messages.length === 0 && !loading && (
+        <div className="text-center text-gray-500 dark:text-gray-400">
+            Start the conversation by typing a message...
+        </div>
+    )}
+    {messages.map((message, index) => (
+        <motion.div
+            key={index}
+            className={`flex w-full ${message.role === 'user' ? 'justify-end' : 'justify-start'} mb-4`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+            <div className={`flex items-stretch space-x-4 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                {message.role === 'user' ? (
+                    <>
+                        <FiUser className="text-blue-500" /> 
+                        <div className="bg-blue-500 text-white p-3 rounded-lg max-w-xs md:max-w-md lg:max-w-lg shadow">
                             {renderMessageContent(message.content)}
-                            <button
-                                onClick={() => handleCopy(message.content)}
-                                className="absolute top-2 right-2 p-1 rounded-full text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
-                            >
-                                <FiCopy />
-                            </button>
                         </div>
-                    </motion.div>
-                ))}
-                {loading && (
-                    <div className="text-center text-gray-500 dark:text-gray-400">Loading...</div>
+                    </>
+                ) : (
+                    <>
+                        <FiCpu className="text-green-500" /> 
+                        <div className="bg-gray-900 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-3 rounded-lg max-w-xs md:max-w-md lg:max-w-lg shadow">
+                            {renderMessageContent(message.content)}
+                            {index === messages.length - 1 && (
+                                <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                                    Generated by {selectedModel}
+                                </div>
+                            )}
+                        </div>
+                    </>
                 )}
-                <div ref={messagesEndRef} />
             </div>
+        </motion.div>
+    ))}
+    <div ref={messagesEndRef} />
+</div>
+
+
 
             {/* Input Section */}
-            <div className="p-4 border-t border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-800 flex items-center">
+            <div className="flex items-center p-2 border-t border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800">
+                <label htmlFor="file-upload" className="cursor-pointer">
+                    <FiFile className="text-gray-500 dark:text-gray-300 mr-3" size={24} />
+                </label>
                 <input
+                    id="file-upload"
                     type="file"
-                    id="fileUpload"
                     className="hidden"
                     onChange={handleFileUpload}
-                />
-                <label
-                    htmlFor="fileUpload"
-                    className="cursor-pointer text-gray-600 dark:text-gray-300 mr-2"
-                >
-                    <FiFile size={24} />
-                </label>
+                /> 
                 <textarea
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Type a message..."
+                    placeholder="Type your message here..."
                     rows={1}
-                    className="flex-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg resize-none bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:outline-none"
+                    className="flex-1 resize-none bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 p-3 rounded-lg focus:outline-none"
                 />
                 <button
                     onClick={handleSend}
+                    className="ml-4 bg-blue-500 text-white p-3 rounded-lg focus:outline-none hover:bg-blue-600 disabled:opacity-50"
                     disabled={loading}
-                    className="ml-2 p-2 bg-blue-500 text-white rounded-lg disabled:bg-blue-300"
                 >
-                    <FiSend size={24} />
+                    {loading ? 'Sending...' : <FiSend />}
                 </button>
             </div>
+
             <ToastContainer />
         </div>
     );
