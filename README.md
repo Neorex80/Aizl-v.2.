@@ -1,8 +1,8 @@
-**Liza: AI-Powered Chat Platform**
+**Liz: AI-Powered Chat Platform**
 =====================================
 
 ### Overview
-Liza is a cutting-edge chat platform that leverages the power of artificial intelligence to provide a seamless experience for AI enthusiasts, developers, and content creators. Our platform enables users to converse with advanced language models, manage AI workflows, and automate tasks with ease.
+Liz is a cutting-edge chat platform that leverages the power of artificial intelligence to provide a seamless experience for AI enthusiasts, developers, and content creators. Our platform enables users to converse with advanced language models, manage AI workflows, and automate tasks with ease.
 
 ### Key Features
 * **Converse with AI Models**: Engage in natural language conversations with our advanced language models, designed to simulate human-like interactions.
